@@ -22,7 +22,7 @@ class PieChartController extends ChangeNotifier {
     Colors.purple,
     Colors.pink
   ];
-  final List<Color> _progressColor = [Colors.green,Colors.yellow,Colors.red];
+  final List<Color> _progressColor = [Colors.green, Colors.yellow, Colors.red];
   final _catogeryExpense = UserPreference.getUserBudget() ??
       {
         "Shopping": {
@@ -142,6 +142,7 @@ class PieChartController extends ChangeNotifier {
         (key, value) => value['completed'] = 0,
       );
     }
+    _hasValues = false;
     for (var item in items) {
       if (item[DBTerms.trackerColCategory] != 'Income') {
         _catogeryExpense[item[DBTerms.trackerColCategory]]!['value'] +=
@@ -151,17 +152,11 @@ class PieChartController extends ChangeNotifier {
           _catogeryExpense[item[DBTerms.trackerColCategory]]!['completed'] +=
               item[DBTerms.trackerColAmount];
         }
+        if (item[DBTerms.trackerColAmount] != 0) {
+          _hasValues = true;
+        }
       }
     }
-    _catogeryExpense.forEach(
-      (key, value) {
-        if (value['value'] != 0) {
-          _hasValues = true;
-        } else {
-          _hasValues = false;
-        }
-      },
-    );
     if (_selectedMonth == DateTime.now().month &&
         _selectedYear == DateTime.now().year) {
       progressCalculator();
