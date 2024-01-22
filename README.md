@@ -1,6 +1,8 @@
-# AutoExpense-Wizard
+<div align="center">
+  <img width="600" src="assets/appBanner.png" alt="Spotube Logo">
 
-Welcome to AutoExpense-Wizard, a Flutter app designed to seamlessly track your income and expenses.
+Welcome to AutoExpense-Wizard, a Flutter app designed to seamlessly track your income and expenses.It uses machine learning to Auto Categorise your expense and also ues track budget 
+</div>
 
 ## Get Started
 
