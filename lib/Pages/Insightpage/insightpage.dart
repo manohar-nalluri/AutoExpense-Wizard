@@ -319,9 +319,9 @@ class InsightPage extends StatelessWidget {
                         style: const TextStyle(fontSize: 16),
                       ),
                       Text(
-                        '     -Used ${value.catogeryExpense[keys[index]]['value']} of BUDGET:${value.catogeryExpense[keys[index]]['budget'] == -1 ? 'Infinite' : value.catogeryExpense[keys[index]]['budget']}',
+                        '     Used ${value.catogeryExpense[keys[index]]['value']}  ${value.catogeryExpense[keys[index]]['budget'] == -1 ? '' : 'of ${value.catogeryExpense[keys[index]]['budget']}'}',
                         style: const TextStyle(
-                            fontSize: 10, fontWeight: FontWeight.bold),
+                             fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

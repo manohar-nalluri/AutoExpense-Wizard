@@ -3,7 +3,6 @@ import 'package:expense_tracker/Global/custom_snackbar.dart';
 import 'package:expense_tracker/Pages/addPage/wizard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:provider/provider.dart';
 import '../../Controller/Providers/data_display_provider.dart';
 import '../../Controller/Providers/gemini_gen_provider.dart';
@@ -94,7 +93,7 @@ class AddPage extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Expanded(child: WizardData()),
+            const Expanded(child: WizardData()),
             SizedBox(
               width: width * 0.8,
               child: TextField(
@@ -108,7 +107,6 @@ class AddPage extends StatelessWidget {
                           : Colors.black,
                     ),
                     onPressed: () {
-                      print('Pressed');
                       if (context.read<GeminiGenNotifier>().toggle == true) {
                         int selected =
                                   context.read<RangeSelectNotifier>().selected;
