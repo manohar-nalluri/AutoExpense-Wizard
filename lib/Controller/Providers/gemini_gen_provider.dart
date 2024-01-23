@@ -25,7 +25,7 @@ class GeminiGenNotifier extends ChangeNotifier {
   ];
   static bool _castingSpell = false;
   static final wizardText = [
-    'Greetings, Manu, seeker of financial wisdom! 🧙✨ What mystical expenses do you wish to unravel from the depths of your budgeting realm today? ',
+    'Greetings, Wizard, seeker of financial wisdom! 🧙✨ What mystical expenses do you wish to unravel from the depths of your budgeting realm today? ',
     'Casting Spell..️',
     'Ohhh! Spell cast is Interrupted by demons TRY AGAIN!!!🪄',
     'Yoo! Wizard🧙 your Spell has been successfully casted🪄'
