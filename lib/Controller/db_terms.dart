@@ -6,4 +6,5 @@ class DBTerms {
   static const trackerColAmount = 'TrackerAmount';
   static const trackerColCategory = 'TrackerCategory';
   static const trackerColType = 'TrackerType';
+  static const trackerColAI = 'TrackerAI';
 }

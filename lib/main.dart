@@ -1,9 +1,12 @@
 import 'package:expense_tracker/Controller/Providers/data_display_provider.dart';
+import 'package:expense_tracker/Controller/Providers/gemini_gen_provider.dart';
 import 'package:expense_tracker/Controller/Providers/name_tag_provider.dart';
 import 'package:expense_tracker/Services/user_preference.dart';
 import 'package:expense_tracker/Pages/addPage/addpage.dart';
 import 'package:expense_tracker/Pages/Insightpage/insightpage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:provider/provider.dart';
 
 import 'Controller/Providers/range_select_provider.dart';
@@ -12,7 +15,9 @@ import 'Pages/Homepage/homepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
   await UserPreference.init();
+  Gemini.init(apiKey: dotenv.env['GEMINI_API_KEY']!);
   runApp(const MyApp());
 }
 
@@ -24,8 +29,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => NameTagNotifer()),
         ChangeNotifierProvider(create: (context) => RangeSelectNotifier()),
-        ChangeNotifierProvider(create: (context) =>DataNotifer()),
+        ChangeNotifierProvider(create: (context) => DataNotifer()),
         ChangeNotifierProvider(create: (context) => PieChartController()),
+        ChangeNotifierProvider(create: (context)=> GeminiGenNotifier())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -61,6 +67,7 @@ class _HomeState extends State<Home> {
     context.read<PieChartController>().setMonthValues();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

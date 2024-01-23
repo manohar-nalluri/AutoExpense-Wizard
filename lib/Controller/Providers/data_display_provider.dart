@@ -6,8 +6,15 @@ import '../playing_with_dates.dart';
 class DataNotifer extends ChangeNotifier {
   var _displayableItems = [];
   num _total = 0;
+  static final DataNotifer _instance = DataNotifer._internal();
   final _dbhelper = Dbhelper.instance;
   DateTime _selectedDate = DateTime.now();
+  var _wizardEnteries = [];
+
+  factory DataNotifer() {
+    return _instance;
+  }
+  DataNotifer._internal();
   final List _displayFormattedDates = [
     'Today, ${datemonth(formattedDate())}',
     ' ${datemonth(formattedDate(date: previousSunday()))} - ${datemonth(formattedDate())}',
@@ -19,6 +26,8 @@ class DataNotifer extends ChangeNotifier {
   get totalAmount => _total;
   get selectedDate => _selectedDate;
   get displayFormattedDates => _displayFormattedDates;
+  get wizardItems => _wizardEnteries;
+  get wizardItemsLength => _wizardEnteries.length;
   setSelectedDate(date) {
     _selectedDate = date;
     _displayFormattedDates[3] = datemonth(formattedDate(date: _selectedDate));
@@ -41,6 +50,11 @@ class DataNotifer extends ChangeNotifier {
     notifyListeners();
   }
 
+  wizardEntries() async {
+    _wizardEnteries = await _dbhelper.wizardAI();
+    notifyListeners();
+  }
+
   setThisWeekItems() async {
     _displayableItems = await _dbhelper.thisWeek();
     setTotal();
@@ -60,14 +74,18 @@ class DataNotifer extends ChangeNotifier {
   }
 
   insertIntoDBAndRefresh(
-      Map<String, dynamic> row, int selected, DateTime date) async {
+      Map<String, dynamic> row, num selected, DateTime date) async {
     _dbhelper.insert(row);
+    if (selected > 3) {
+      wizardEntries();
+    }
+    selected = selected % 4;
     if (selected == 0) {
       setTodayItems();
     } else if (selected == 1) {
       setThisWeekItems();
     } else if (selected == 2) {
       setThisMonthItems();
-    } else {}
+    } else if (selected == 3) {}
   }
 }

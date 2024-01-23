@@ -15,6 +15,7 @@ class Dbhelper {
   static const trackerColAmount = 'TrackerAmount';
   static const trackerColCategory = 'TrackerCategory';
   static const trackerColType = 'TrackerType';
+  static const trackerColAI = 'TrackerAI';
 
   Dbhelper._privateConstructor();
   static final Dbhelper instance = Dbhelper._privateConstructor();
@@ -43,13 +44,11 @@ CREATE TABLE $trackerTable(
   $trackerColAmount INTEGER NOT NULL,
   $trackerColDate DATE NOT NULL,
   $trackerColCategory TEXT NOT NULL,
-  $trackerColType TEXT NOT NULL
+  $trackerColType TEXT NOT NULL,
+  $trackerColAI BOOLEAN DEFAULT 0
 )
-
 ''');
-    
   }
-  
 
   Future<int> insert(Map<String, dynamic> row) async {
     Database db = await instance.database;
@@ -108,16 +107,28 @@ CREATE TABLE $trackerTable(
     return res;
   }
 
-  Future<List<Map<String, dynamic>>> month(int month,int year) async  {
+  Future<List<Map<String, dynamic>>> month(int month, int year) async {
     Database db = await instance.database;
 
-    var monthStartingDate = formattedDate(date: givenMonthStartDate(month, year));
-    var monthEndDate=formattedDate(date: givenMonthEndDate(month,year));
-     List<Map<String, dynamic>> result = await db.query(
+    var monthStartingDate =
+        formattedDate(date: givenMonthStartDate(month, year));
+    var monthEndDate = formattedDate(date: givenMonthEndDate(month, year));
+    List<Map<String, dynamic>> result = await db.query(
       trackerTable,
       where: '$trackerColDate BETWEEN ? AND ?',
       whereArgs: [monthStartingDate, monthEndDate],
     );
     return result;
+  }
+
+  Future<List<Map<String, dynamic>>> wizardAI() async {
+    Database db = await instance.database;
+    var today = formattedDate();
+    var res = await db.query(
+      trackerTable,
+      where: "$trackerColDate = ? AND $trackerColAI = ?",
+      whereArgs: [today,1],
+    );
+    return res;
   }
 }

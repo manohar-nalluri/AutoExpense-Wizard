@@ -1,9 +1,12 @@
 import 'package:expense_tracker/Controller/Providers/pie_chart_controller.dart';
 import 'package:expense_tracker/Global/custom_snackbar.dart';
+import 'package:expense_tracker/Pages/addPage/wizard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:provider/provider.dart';
 import '../../Controller/Providers/data_display_provider.dart';
+import '../../Controller/Providers/gemini_gen_provider.dart';
 import '../../Controller/Providers/range_select_provider.dart';
 import '../../Controller/db_terms.dart';
 import '../../Controller/edit_tracker.dart';
@@ -91,16 +94,34 @@ class AddPage extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            const Spacer(),
+            Expanded(child: WizardData()),
             SizedBox(
               width: width * 0.8,
               child: TextField(
                 controller: nlpTextController,
                 decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.send,
+                      color: context.watch<GeminiGenNotifier>().toggle
+                          ? Colors.blue
+                          : Colors.black,
+                    ),
+                    onPressed: () {
+                      print('Pressed');
+                      if (context.read<GeminiGenNotifier>().toggle == true) {
+                        int selected =
+                                  context.read<RangeSelectNotifier>().selected;
+                        context
+                            .read<GeminiGenNotifier>()
+                            .setData(nlpTextController.text,selected);
+                      }
+                    },
+                  ),
                   border: OutlineInputBorder(
                       borderSide: const BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(32)),
-                  hintText: 'Working Under Process',
+                  hintText: 'Rent 1000',
                 ),
               ),
             ),
