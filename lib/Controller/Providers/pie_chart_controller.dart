@@ -8,6 +8,11 @@ import '../../Services/user_preference.dart';
 class PieChartController extends ChangeNotifier {
   final _dbhelper = Dbhelper.instance;
   var _hasValues = false;
+  static final PieChartController _instance = PieChartController._internal();
+  factory PieChartController() {
+    return _instance;
+  }
+  PieChartController._internal();
   int _selectedYear = DateTime.now().year;
   int _selectedMonth = DateTime.now().month;
   final List<Color> _color = [

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:expense_tracker/Controller/Providers/data_display_provider.dart';
+import 'package:expense_tracker/Controller/Providers/pie_chart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 
@@ -82,15 +83,19 @@ class GeminiGenNotifier extends ChangeNotifier {
           DBTerms.trackerColDate: date,
           DBTerms.trackerColCategory: data['category'],
           DBTerms.trackerColType: type,
-          DBTerms.trackerColAI:1,
+          DBTerms.trackerColAI: 1,
         };
-        DataNotifer().insertIntoDBAndRefresh(row, 4+selected, DateTime.now());
+        DataNotifer().insertIntoDBAndRefresh(row, 4 + selected, DateTime.now());
+        PieChartController().setMonthValues();
+        if (PieChartController().selectedMonth != DateTime.now().month &&
+            PieChartController().selectedYear != DateTime.now().year) {
+          PieChartController().updateComplete();
+        }
         changeToogle();
         castingSpellToggle();
         sucessSpellCast();
       }
     } catch (e) {
-      print('Error due to above code');
       failedToCategorise();
     }
   }
